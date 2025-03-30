@@ -16,7 +16,7 @@ jobs:
       - name: Validar HTML con Docker
         uses: docker://cyb3rjak3/html5-validator
         with:
-          file: index.html
+          file: index.htm
 
       # Opción 2: Usar la acción W3C para validar HTML
       # - name: Validar HTML con W3C
