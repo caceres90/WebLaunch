@@ -1,0 +1,45 @@
+name: Deploy Website
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate-html:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3
+
+      # Opción 1: Usar la imagen de Docker para validar HTML
+      - name: Validar HTML con Docker
+        uses: docker://cyb3rjak3/html5-validator
+        with:
+          file: index.html
+
+      # Opción 2: Usar la acción W3C para validar HTML
+      # - name: Validar HTML con W3C
+      #   uses: ChienDevIT/html5-validator@v1
+      #   with:
+      #     file: index.html
+
+      # Opción 3: Usar htmlhint para validar HTML
+      # - name: Instalar htmlhint
+      #   run: npm install -g htmlhint
+
+      # - name: Validar HTML con htmlhint
+      #   run: htmlhint index.html
+
+  deploy:
+    needs: validate-html
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v3
+
+      - name: Publicar en GitHub Pages
+        uses: actions/upload-pages-artifact@v2
